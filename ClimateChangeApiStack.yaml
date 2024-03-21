@@ -1,0 +1,9 @@
+Resources:
+  ClimateChangeAPI:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Name: "ClimateChangeAPI"
+      Description: "Climate Change Data and Analytics API"
+      
+# We need a /ping path, without authorization but strictly throttled down
+# and also a /hello path, which requires authorization. 
