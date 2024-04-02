@@ -2,6 +2,7 @@
 
 name: Synchronize S3 bucket with AWS Cloudformation resource descriptions
 
+run-name: Synchronize Natixar back-end IaaS to AWS S3 by @${{ github.actor }}
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the "master" branch
@@ -15,8 +16,8 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
+  # This workflow contains a single job called "deploy"
+  deploy:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -25,12 +26,23 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
 
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
+      # Get temporary credentials
+      - name: Setup AWS with Certificate Authentication
+        id: aws_auth
+        uses: Natixar/AWS_actions/auth_with_certificate@main
+        with:
+          certificate_content: ${{ vars.AWS_GITHUB_CERTIFICATE }}
+          private_key: ${{ secrets.AWS_GITHUB_PRIVATE_KEY }}
+          role_arn: arn:aws:iam::975050054945:role/ServiceRoleSyncS3InfrastructureAsCode
+          trust_anchor_arn: arn:aws:rolesanywhere:eu-west-3:975050054945:trust-anchor/0feca5f4-ef79-41a6-a8ec-2c7bab0221d0
+          
+      # Syncs the files using temporary credentials          
+      - name: Sync files to S3
+        env:
+          AWS_ACCESS_KEY_ID: ${{ steps.aws_auth.outputs.access_key_id }}
+          AWS_SECRET_ACCESS_KEY: ${{ steps.aws_auth.outputs.secret_access_key }}
+          AWS_SESSION_TOKEN: ${{ steps.aws_auth.outputs.session_token }}
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          aws s3 sync . s3://natixar-infrastructure-as-code/AWS_backend --no-progress
+
