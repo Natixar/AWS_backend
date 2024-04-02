@@ -44,5 +44,6 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ steps.aws_auth.outputs.AWS_SECRET_ACCESS_KEY }}
           AWS_SESSION_TOKEN: ${{ steps.aws_auth.outputs.AWS_SESSION_TOKEN }}
         run: |
+          echo "The session token is $AWS_SESSION_TOKEN"
           aws s3 sync . s3://natixar-infrastructure-as-code/AWS_backend --no-progress
 
