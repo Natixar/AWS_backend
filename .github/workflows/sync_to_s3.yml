@@ -44,8 +44,6 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ steps.aws_auth.outputs.secret_access_key }}
           AWS_SESSION_TOKEN: ${{ steps.aws_auth.outputs.session_token }}
         run: |
-          echo "The access key id is $AWS_ACCESS_KEY_ID"
-          echo "The secret is $AWS_SECRET_ACCESS_KEY"
           aws configure set aws_access_key_id "$AWS_ACCESS_KEY_ID"
           aws configure set aws_secret_access_key "$AWS_SECRET_ACCESS_KEY"
           aws configure set aws_session_token "$AWS_SESSION_TOKEN"
