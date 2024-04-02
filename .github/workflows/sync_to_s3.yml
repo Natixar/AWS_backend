@@ -40,9 +40,9 @@ jobs:
       # Syncs the files using temporary credentials          
       - name: Sync files to S3
         env:
-          AWS_ACCESS_KEY_ID: ${{ steps.aws_auth.outputs.access_key_id }}
-          AWS_SECRET_ACCESS_KEY: ${{ steps.aws_auth.outputs.secret_access_key }}
-          AWS_SESSION_TOKEN: ${{ steps.aws_auth.outputs.session_token }}
+          AWS_ACCESS_KEY_ID: ${{ steps.aws_auth.outputs.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ steps.aws_auth.outputs.AWS_SECRET_ACCESS_KEY }}
+          AWS_SESSION_TOKEN: ${{ steps.aws_auth.outputs.AWS_SESSION_TOKEN }}
         run: |
           aws s3 sync . s3://natixar-infrastructure-as-code/AWS_backend --no-progress
 
