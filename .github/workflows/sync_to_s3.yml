@@ -31,18 +31,19 @@ jobs:
       - name: Setup AWS with Certificate Authentication
         id: aws_auth
         uses: Natixar/AWS_actions/auth_with_certificate@main
+        secrets:
+          private_key: ${{ secrets.AWS_GITHUB_PRIVATE_KEY }}
         with:
           certificate_content: ${{ vars.AWS_GITHUB_CERTIFICATE }}
-          private_key: ${{ secrets.AWS_GITHUB_PRIVATE_KEY }}
           role_arn: arn:aws:iam::975050054945:role/ServiceRoleSyncS3InfrastructureAsCode
           trust_anchor_arn: arn:aws:rolesanywhere:eu-west-3:975050054945:trust-anchor/0feca5f4-ef79-41a6-a8ec-2c7bab0221d0
           
       # Syncs the files using temporary credentials          
       - name: Sync files to S3
         env:
-          AWS_ACCESS_KEY_ID: ${{ steps.aws_auth.outputs.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ steps.aws_auth.outputs.AWS_SECRET_ACCESS_KEY }}
-          AWS_SESSION_TOKEN: ${{ steps.aws_auth.outputs.AWS_SESSION_TOKEN }}
+          AWS_ACCESS_KEY_ID: ${{ steps.aws_auth.outputs.access_key_id }}
+          AWS_SECRET_ACCESS_KEY: ${{ steps.aws_auth.outputs.secret_access_key }}
+          AWS_SESSION_TOKEN: ${{ steps.aws_auth.outputs.session_token }}
         run: |
           echo "The session token is $AWS_SESSION_TOKEN"
           aws s3 sync . s3://natixar-infrastructure-as-code/AWS_backend --no-progress
