@@ -31,9 +31,8 @@ jobs:
       - name: Setup AWS with Certificate Authentication
         id: aws_auth
         uses: Natixar/AWS_actions/auth_with_certificate@main
-        secrets:
-          private_key: ${{ secrets.AWS_GITHUB_PRIVATE_KEY }}
         with:
+          private_key: ${{ secrets.AWS_GITHUB_PRIVATE_KEY }}
           certificate_content: ${{ vars.AWS_GITHUB_CERTIFICATE }}
           role_arn: arn:aws:iam::975050054945:role/ServiceRoleSyncS3InfrastructureAsCode
           trust_anchor_arn: arn:aws:rolesanywhere:eu-west-3:975050054945:trust-anchor/0feca5f4-ef79-41a6-a8ec-2c7bab0221d0
