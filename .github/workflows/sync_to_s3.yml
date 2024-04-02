@@ -48,5 +48,6 @@ jobs:
           aws configure set aws_secret_access_key "$AWS_SECRET_ACCESS_KEY"
           aws configure set aws_session_token "$AWS_SESSION_TOKEN"
           aws configure set region eu-west-3
-          aws s3 sync . s3://natixar-infrastructure-as-code/AWS_backend --no-progress
+          aws s3 sync . s3://natixar-infrastructure-as-code/AWS_backend \
+            --no-progress --delete --exclude ".git/*" --exclude ".github/*"
 
