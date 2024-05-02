@@ -4,11 +4,13 @@ run-name: Synchronize Natixar back-end IaaS to AWS S3 by @${{ github.actor }}
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the "master" branch
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
-
+  #push:
+  #  branches: [ "master" ]
+  #pull_request:
+  #  branches: [ "master" ]
+  # Disable auto-runs: we are now using AWS CDK with cdk deploy, which does all this
+  # automatically and much more thouroughly. 
+  
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
